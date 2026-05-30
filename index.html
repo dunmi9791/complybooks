@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComplyBooks — ERP Power, SME Simplicity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== Reset & Variables ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --accent: #534AB7;
+  --accent-mid: #7F77DD;
+  --accent-soft: #EEEDFE;
+  --bg: #f5f5f0;
+  --text: #1a1a2e;
+  --text-mid: #555;
+  --text-light: #888;
+  --white: #fff;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", "Plus Jakarta Sans", system-ui, sans-serif;
+  --max-w: 1200px;
+  --section-pad: 100px 24px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; font-family: inherit; }
+
+.container { max-width: var(--max-w); margin: 0 auto; }
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.section-label::before {
+  content: '';
+  width: 32px;
+  height: 2px;
+  background: var(--accent);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.section-sub {
+  font-size: 18px;
+  color: var(--text-mid);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+/* ===== Reveal Animation ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Header ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(245, 245, 240, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.header-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--text);
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-icon svg { width: 20px; height: 20px; }
+.nav { display: flex; align-items: center; gap: 32px; }
+.nav a {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-mid);
+  transition: color 0.2s;
+}
+.nav a:hover { color: var(--accent); }
+.header-actions { display: flex; align-items: center; gap: 20px; }
+.btn-login {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  background: none;
+  padding: 8px 0;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: #4840a0; transform: translateY(-1px); }
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 10px;
+  border: 1.5px solid #ddd;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.btn-outline:hover { border-color: var(--accent); transform: translateY(-1px); }
+.hamburger { display: none; background: none; border: none; }
+
+/* ===== Hero ===== */
+.hero {
+  padding: 80px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+}
+.hero-text { z-index: 2; }
+.hero-text .section-label { margin-bottom: 24px; }
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.08;
+  margin-bottom: 24px;
+}
+.hero-headline .accent { color: var(--accent); }
+.hero-desc {
+  font-size: 17px;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 520px;
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--white);
+  border: 1px solid #e8e8e4;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+.hero-badge svg { width: 16px; height: 16px; color: var(--accent); }
+
+/* Hero Cards */
+.hero-cards {
+  position: relative;
+  min-height: 500px;
+  z-index: 1;
+}
+.hero-card {
+  position: absolute;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  animation: float 6s ease-in-out infinite;
+}
+.hero-card--sales { top: 0; left: 0; min-width: 220px; }
+.hero-card--einvoice { top: 20px; right: 0; min-width: 220px; animation-delay: -1s; }
+.hero-card--vat { top: 200px; left: -20px; min-width: 200px; animation-delay: -2s; }
+.hero-card--ai { bottom: 80px; left: 60px; min-width: 200px; animation-delay: -3s; }
+.hero-card--invoices { bottom: 0; right: -10px; min-width: 240px; animation-delay: -4s; }
+
+.card-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.card-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+}
+.card-change {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1D9E75;
+  margin-top: 4px;
+}
+.card-change.negative { color: #e74c3c; }
+.card-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #1D9E75;
+  font-size: 15px;
+}
+.card-checklist {
+  margin-top: 10px;
+  list-style: none;
+  font-size: 13px;
+  color: var(--text-mid);
+}
+.card-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+.card-checklist li::before {
+  content: '✓';
+  color: #1D9E75;
+  font-weight: 700;
+  font-size: 12px;
+}
+.card-bar {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.card-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+.invoice-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+}
+.invoice-id { font-weight: 600; color: var(--text); }
+.invoice-name { color: var(--text-light); font-size: 12px; }
+.invoice-status {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.invoice-status.paid { background: #e2f4ee; color: #1D9E75; }
+.invoice-status.pending { background: #fff3e0; color: #e67e22; }
+.invoice-status.submitted { background: var(--accent-soft); color: var(--accent); }
+.invoice-status.overdue { background: #fde8e8; color: #e74c3c; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ===== Problem Section ===== */
+.problem {
+  padding: var(--section-pad);
+  text-align: center;
+}
+.problem .section-label { justify-content: center; }
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.problem-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: left;
+  border: 1px solid #eee;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.problem-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+.problem-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+.problem-icon.red { background: #fde8e8; color: #e74c3c; }
+.problem-icon.orange { background: #fff3e0; color: #e67e22; }
+.problem-icon.purple { background: var(--accent-soft); color: var(--accent); }
+.problem-card h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.problem-card p {
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* ===== Solution Section ===== */
+.solution {
+  padding: var(--section-pad);
+  background: var(--white);
+}
+.solution-header { text-align: center; margin-bottom: 56px; }
+.solution-header .section-label { justify-content: center; }
+.solution-header .section-sub { margin: 0 auto; }
+.solution-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.solution-card {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  position: relative;
+  border: 1px solid #eee;
+  transition: transform 0.2s;
+}
+.solution-card:hover { transform: translateY(-4px); }
+.solution-num {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--accent-soft);
+  line-height: 1;
+}
+.solution-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--white);
+  font-size: 18px;
+}
+.solution-card h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.solution-card > p {
+  font-size: 14px;
+  color: var(--text-mid);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.solution-card ul {
+  list-style: none;
+  font-size: 13px;
+  color: var(--text-mid);
+}
+.solution-card ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+}
+.solution-card ul li::before {
+  content: '✓';
+  color: #1D9E75;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ===== Workflow Section ===== */
+.workflow {
+  padding: var(--section-pad);
+  text-align: center;
+}
+.workflow .section-label { justify-content: center; }
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+  max-width: var(--max-w);
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.workflow-step {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: left;
+  border: 1px solid #eee;
+  position: relative;
+}
+.step-num {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: var(--white);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.workflow-step h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.workflow-step p {
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+.workflow-arrow {
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-mid);
+  font-size: 20px;
+  z-index: 2;
+}
+.workflow-tagline {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 700;
+  color: var(--text);
+}
+.workflow-tagline svg { color: var(--accent); width: 28px; height: 28px; flex-shrink: 0; }
+
+/* ===== Dashboard Preview ===== */
+.dashboard-section {
+  padding: var(--section-pad);
+  background: var(--white);
+}
+.dashboard-section .section-label { justify-content: center; }
+.dashboard-section .section-title { text-align: center; }
+.dashboard-wrap {
+  max-width: var(--max-w);
+  margin: 48px auto 0;
+  background: var(--bg);
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #e8e8e4;
+}
+.dash-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.dash-tab {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text-mid);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.dash-tab.active {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+.dash-tab:hover:not(.active) { background: var(--white); border-color: #ddd; }
+
+.dash-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.kpi-card {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  border: 1px solid #eee;
+}
+.kpi-card .card-label { margin-bottom: 8px; }
+.kpi-card .card-value { font-size: 24px; }
+
+.dash-charts {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+.chart-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px;
+  border: 1px solid #eee;
+}
+.chart-card h4 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 160px;
+  gap: 12px;
+}
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.bar {
+  width: 100%;
+  max-width: 40px;
+  background: var(--accent);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.6s ease;
+}
+.bar-label { font-size: 12px; color: var(--text-light); }
+
+.customer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.customer-row:last-child { border-bottom: none; }
+.customer-name { font-size: 14px; font-weight: 500; }
+.customer-amount {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.customer-bar {
+  flex: 1;
+  height: 4px;
+  background: #eee;
+  border-radius: 2px;
+  margin: 0 16px;
+  overflow: hidden;
+}
+.customer-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ===== Compliance Banner ===== */
+.compliance {
+  padding: 80px 24px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+  text-align: center;
+  color: var(--white);
+}
+.compliance h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+.compliance p {
+  font-size: 17px;
+  opacity: 0.9;
+  margin-bottom: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 10px;
+  transition: transform 0.15s;
+}
+.btn-white:hover { transform: translateY(-2px); }
+
+/* ===== Customers Section ===== */
+.customers {
+  padding: var(--section-pad);
+  text-align: center;
+  background: #2a2540;
+  color: var(--white);
+}
+.customers .section-title { color: var(--white); }
+.customers .section-sub { color: rgba(255,255,255,0.7); margin: 0 auto 48px; }
+.customer-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.customer-type {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.customer-type:hover { background: rgba(255,255,255,0.14); }
+
+/* ===== Pricing Section ===== */
+.pricing {
+  padding: var(--section-pad);
+}
+.pricing-header { text-align: center; margin-bottom: 56px; }
+.pricing-header .section-label { justify-content: center; }
+.pricing-header .section-sub { margin: 0 auto; }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.pricing-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  border: 1.5px solid #eee;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+  position: relative;
+}
+.pricing-card:hover { transform: translateY(-4px); }
+.pricing-card.popular {
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px rgba(83, 74, 183, 0.15);
+}
+.popular-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.pricing-card h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.pricing-card .plan-desc {
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.pricing-card .price {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.pricing-card .price-period {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 24px;
+}
+.pricing-card ul {
+  list-style: none;
+  margin-bottom: 28px;
+  flex: 1;
+}
+.pricing-card ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--text-mid);
+}
+.pricing-card ul li::before {
+  content: '✓';
+  color: #1D9E75;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.pricing-card .btn-primary { width: 100%; justify-content: center; }
+.pricing-card .btn-outline { width: 100%; justify-content: center; }
+.pricing-note {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-light);
+  margin-top: 32px;
+}
+
+/* ===== Why Section ===== */
+.why {
+  padding: var(--section-pad);
+  background: var(--white);
+}
+.why-header { margin-bottom: 48px; }
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.why-card {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border: 1px solid #eee;
+  transition: transform 0.2s;
+}
+.why-card:hover { transform: translateY(-3px); }
+.why-check {
+  width: 32px;
+  height: 32px;
+  background: #e2f4ee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #1D9E75;
+  font-weight: 700;
+  font-size: 14px;
+}
+.why-card p {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ===== Final CTA ===== */
+.final-cta {
+  padding: 100px 24px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+  text-align: center;
+  color: var(--white);
+}
+.final-cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.final-cta p {
+  font-size: 17px;
+  opacity: 0.9;
+  margin-bottom: 40px;
+  max-width: 580px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.final-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.15);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  transition: background 0.2s;
+}
+.btn-dark:hover { background: rgba(255,255,255,0.25); }
+
+/* ===== Footer ===== */
+.footer {
+  background: #2a2540;
+  color: rgba(255,255,255,0.8);
+  padding: 64px 24px 32px;
+}
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-brand .logo { color: var(--white); margin-bottom: 16px; }
+.footer-brand .logo-icon { background: var(--accent); }
+.footer-brand p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 20px;
+}
+.social-links { display: flex; gap: 10px; }
+.social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 16px;
+  transition: background 0.2s;
+}
+.social-link:hover { background: var(--accent); }
+.footer-col h4 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--white); }
+.footer-contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  padding: 5px 0;
+}
+.footer-contact svg { width: 16px; height: 16px; flex-shrink: 0; }
+.footer-bottom {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+}
+.footer-bottom strong { font-weight: 600; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-cards { display: none; }
+  .problem-grid { grid-template-columns: repeat(2, 1fr); }
+  .solution-grid { grid-template-columns: repeat(2, 1fr); }
+  .workflow-grid { grid-template-columns: repeat(2, 1fr); }
+  .workflow-arrow { display: none; }
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-kpis { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  :root { --section-pad: 64px 16px; }
+  .nav { display: none; }
+  .hamburger { display: block; }
+  .problem-grid { grid-template-columns: 1fr; }
+  .solution-grid { grid-template-columns: 1fr; }
+  .workflow-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .dash-charts { grid-template-columns: 1fr; }
+  .dash-kpis { grid-template-columns: 1fr; }
+  .customer-types { grid-template-columns: 1fr 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* ===== Demo Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  padding: 24px;
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+.modal {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 40px 36px;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s ease;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-light);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.modal-close:hover { background: #f0f0f0; }
+.modal h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.modal .modal-sub {
+  font-size: 14px;
+  color: var(--text-mid);
+  margin-bottom: 28px;
+}
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--text);
+  transition: border-color 0.2s;
+  background: var(--bg);
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: #aaa; }
+.form-group textarea { resize: vertical; min-height: 72px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.form-submit:hover { background: #4840a0; }
+.form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.form-feedback {
+  text-align: center;
+  padding: 32px 0;
+  display: none;
+}
+.form-feedback.show { display: block; }
+.form-feedback svg {
+  width: 56px;
+  height: 56px;
+  color: #1D9E75;
+  margin-bottom: 16px;
+}
+.form-feedback h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.form-feedback p { font-size: 14px; color: var(--text-mid); }
+.form-error {
+  font-size: 13px;
+  color: #e74c3c;
+  margin-top: 8px;
+  display: none;
+}
+.form-error.show { display: block; }
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr; }
+  .modal { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14,2 14,8 20,8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      ComplyBooks
+    </a>
+    <nav class="nav">
+      <a href="#features">Features</a>
+      <a href="#ai">AI Assistant</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-login">Login</button>
+      <a href="#" class="btn-primary" data-open-demo>Book a Demo</a>
+    </div>
+    <button class="hamburger" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="section-label">ERP Power, SME Simplicity</div>
+      <h1 class="hero-headline">
+        Run your business, issue <span class="accent">compliant invoices</span>, and understand your numbers.
+      </h1>
+      <p class="hero-desc">
+        ComplyBooks helps SMEs manage sales, invoicing, inventory, purchases, accounting, VAT, and e-invoicing compliance &mdash; with AI that turns receipts and conversations into business records.
+      </p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-primary" style="padding:16px 36px; font-size:16px;" data-open-demo>Book a Demo &rarr;</a>
+        <a href="#" class="btn-outline" style="padding:16px 36px; font-size:16px;">See How It Works</a>
+      </div>
+      <div class="hero-badges">
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          FIRS/NRS e-Invoicing Ready
+        </span>
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+          VAT Reporting
+        </span>
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          AI Receipt Capture
+        </span>
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          Inventory &amp; Accounting
+        </span>
+      </div>
+    </div>
+    <div class="hero-cards" aria-hidden="true">
+      <!-- Sales Today -->
+      <div class="hero-card hero-card--sales">
+        <div class="card-label">SALES TODAY</div>
+        <div class="card-value">&#8358;1,284,500</div>
+        <div class="card-change">&#8599; +18% vs yesterday</div>
+        <div style="display:flex;gap:4px;margin-top:10px;">
+          <div style="width:14%;height:28px;background:var(--accent);border-radius:3px;opacity:.5"></div>
+          <div style="width:14%;height:36px;background:var(--accent);border-radius:3px;opacity:.6"></div>
+          <div style="width:14%;height:24px;background:var(--accent);border-radius:3px;opacity:.5"></div>
+          <div style="width:14%;height:44px;background:var(--accent);border-radius:3px;opacity:.7"></div>
+          <div style="width:14%;height:52px;background:var(--accent);border-radius:3px;opacity:.8"></div>
+          <div style="width:14%;height:40px;background:var(--accent);border-radius:3px"></div>
+        </div>
+      </div>
+      <!-- e-Invoicing -->
+      <div class="hero-card hero-card--einvoice">
+        <div class="card-status">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          e-Invoicing
+        </div>
+        <div style="color:var(--accent);font-weight:600;font-size:13px;margin-top:2px;">Ready &middot; 100%</div>
+        <ul class="card-checklist">
+          <li>FIRS profile linked</li>
+          <li>Invoice schema valid</li>
+          <li>Audit log active</li>
+        </ul>
+      </div>
+      <!-- VAT Due -->
+      <div class="hero-card hero-card--vat">
+        <div class="card-label">VAT DUE (THIS MONTH)</div>
+        <div class="card-value" style="font-size:24px;">&#8358;96,338</div>
+        <div class="card-bar"><span style="width:65%"></span></div>
+        <div style="font-size:12px;color:var(--text-light);margin-top:6px;">Filing window closes in 12 days</div>
+      </div>
+      <!-- AI Receipt -->
+      <div class="hero-card hero-card--ai">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <span style="font-weight:700;font-size:15px;">AI Receipt Capture</span>
+        </div>
+        <div style="background:var(--accent-soft);border-radius:8px;padding:16px;text-align:center;margin-bottom:8px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div style="font-size:12px;color:var(--accent);margin-top:4px;">Dangote_Cement.pdf</div>
+        </div>
+        <div style="font-size:12px;color:var(--accent);font-weight:500;">Extracting line items...</div>
+        <div class="card-bar"><span style="width:70%;background:var(--accent)"></span></div>
+      </div>
+      <!-- Recent Invoices -->
+      <div class="hero-card hero-card--invoices">
+        <div class="card-label">RECENT INVOICES</div>
+        <div class="invoice-row">
+          <div><div class="invoice-id">IV-2041</div><div class="invoice-name">Mama Gold Stores</div></div>
+          <span class="invoice-status paid">PAID</span>
+        </div>
+        <div class="invoice-row">
+          <div><div class="invoice-id">IV-2040</div><div class="invoice-name">Ekoh Pharmacy</div></div>
+          <span class="invoice-status pending">PENDING</span>
+        </div>
+        <div class="invoice-row">
+          <div><div class="invoice-id">IV-2039</div><div class="invoice-name">BuildRite Ltd</div></div>
+          <span class="invoice-status submitted">SUBMITTED</span>
+        </div>
+        <div class="invoice-row">
+          <div><div class="invoice-id">IV-2038</div><div class="invoice-name">Spark Electronics</div></div>
+          <span class="invoice-status overdue">OVERDUE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem Section -->
+<section class="problem reveal">
+  <div class="container">
+    <div class="section-label">The Everyday Reality</div>
+    <h2 class="section-title">Sound familiar?</h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon red">&#9201;</div>
+        <h3>Manual invoicing eats your day</h3>
+        <p>Preparing invoices by hand wastes hours that should go into selling and serving customers.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon orange">&#9878;</div>
+        <h3>VAT &amp; compliance feel confusing</h3>
+        <p>Reporting rules and e-invoicing requirements are hard to follow without a finance team.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon purple">&#9776;</div>
+        <h3>Stock, purchases &amp; sales don't talk</h3>
+        <p>Disconnected tools mean numbers never quite match and decisions are made in the dark.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon red">&#9673;</div>
+        <h3>No everyday visibility</h3>
+        <p>Owners wait on accountants to answer simple questions, while paper receipts vanish faster than office biscuits.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Solution Section -->
+<section class="solution reveal" id="features">
+  <div class="solution-header">
+    <div class="section-label">One Platform</div>
+    <h2 class="section-title">Everything your business needs, nothing it doesn't.</h2>
+    <p class="section-sub">A little bit of magic with a lot of accountability built in.</p>
+  </div>
+  <div class="solution-grid container">
+    <div class="solution-card">
+      <span class="solution-num">01</span>
+      <div class="solution-icon">&#128196;</div>
+      <h3>Sales &amp; Invoicing</h3>
+      <p>Create quotes, invoices, receipts and customer records in seconds.</p>
+      <ul>
+        <li>Track status from draft to paid</li>
+        <li>Branded, compliant invoice layouts</li>
+        <li>Customer statements &amp; reminders</li>
+      </ul>
+    </div>
+    <div class="solution-card">
+      <span class="solution-num">02</span>
+      <div class="solution-icon">&#128230;</div>
+      <h3>Inventory &amp; Purchases</h3>
+      <p>Keep stock, supplier bills and product movement in one place.</p>
+      <ul>
+        <li>Live stock levels per location</li>
+        <li>Record purchases &amp; supplier bills</li>
+        <li>Low-stock alerts before you run out</li>
+      </ul>
+    </div>
+    <div class="solution-card">
+      <span class="solution-num">03</span>
+      <div class="solution-icon">&#128202;</div>
+      <h3>Accounting &amp; Reports</h3>
+      <p>Understand the business without waiting for month-end drama.</p>
+      <ul>
+        <li>P&amp;L, balance sheet &amp; cash position</li>
+        <li>VAT report, receivables &amp; payables</li>
+        <li>Plain-English financial summaries</li>
+      </ul>
+    </div>
+    <div class="solution-card">
+      <span class="solution-num">04</span>
+      <div class="solution-icon">&#9989;</div>
+      <h3>E-Invoicing Compliance</h3>
+      <p>Get ready for FIRS / NRS / MBS e-invoicing requirements.</p>
+      <ul>
+        <li>Standards-aware invoice records</li>
+        <li>Complete audit logs</li>
+      </ul>
+    </div>
+    <div class="solution-card" id="ai">
+      <span class="solution-num">05</span>
+      <div class="solution-icon">&#10024;</div>
+      <h3>AI Receipt Capture</h3>
+      <p>Upload receipts, invoices and bank statements &mdash; AI does the typing.</p>
+      <ul>
+        <li>Extracts supplier, amount, VAT &amp; date</li>
+      </ul>
+    </div>
+    <div class="solution-card">
+      <span class="solution-num">06</span>
+      <div class="solution-icon">&#128172;</div>
+      <h3>Business Chat Assistant</h3>
+      <p>Ask your books a question and get an answer, in seconds.</p>
+      <ul>
+        <li>"How much did I sell this week?"</li>
+        <li>"Which customers are owing?"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Workflow Section -->
+<section class="workflow reveal">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From receipt to record in 4 steps</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <div class="step-num">1</div>
+        <h3>Upload</h3>
+        <p>Drop in a receipt, supplier invoice or bank statement &mdash; photo or PDF.</p>
+        <span class="workflow-arrow">&rarr;</span>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">2</div>
+        <h3>AI extracts</h3>
+        <p>Supplier, amount, VAT, date and every line item are read automatically.</p>
+        <span class="workflow-arrow">&rarr;</span>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">3</div>
+        <h3>You review</h3>
+        <p>Check the suggested entry, tweak anything, then approve with one tap.</p>
+        <span class="workflow-arrow">&rarr;</span>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">4</div>
+        <h3>ComplyBooks posts</h3>
+        <p>The record is filed and your reports update instantly. No re-typing.</p>
+      </div>
+    </div>
+    <div class="workflow-tagline">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      AI suggests. You approve. The audit trail keeps everything accountable.
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Preview -->
+<section class="dashboard-section reveal">
+  <div class="container">
+    <div class="section-label" style="justify-content:center;">See It In Action</div>
+    <h2 class="section-title" style="text-align:center;">Your business, at a glance.</h2>
+    <div class="dashboard-wrap">
+      <div class="dash-tabs">
+        <button class="dash-tab active">Overview</button>
+        <button class="dash-tab">Sales</button>
+        <button class="dash-tab">Invoices</button>
+        <button class="dash-tab">Inventory</button>
+        <button class="dash-tab">Accounting</button>
+        <button class="dash-tab">AI Chat</button>
+      </div>
+      <div class="dash-kpis">
+        <div class="kpi-card">
+          <div class="card-label">TOTAL REVENUE</div>
+          <div class="card-value">&#8358;8,450,200</div>
+          <div class="card-change">&#8599; +22%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="card-label">INVOICES SENT</div>
+          <div class="card-value">142</div>
+          <div class="card-change">&#8599; +15%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="card-label">OUTSTANDING</div>
+          <div class="card-value">&#8358;1,230,000</div>
+          <div class="card-change negative">&#8600; -8%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="card-label">NET PROFIT</div>
+          <div class="card-value">&#8358;2,180,400</div>
+          <div class="card-change">&#8599; +4%</div>
+        </div>
+      </div>
+      <div class="dash-charts">
+        <div class="chart-card">
+          <h4>Sales over the last 7 days</h4>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar" style="height:55%"></div><span class="bar-label">M</span></div>
+            <div class="bar-col"><div class="bar" style="height:65%"></div><span class="bar-label">T</span></div>
+            <div class="bar-col"><div class="bar" style="height:50%"></div><span class="bar-label">W</span></div>
+            <div class="bar-col"><div class="bar" style="height:75%"></div><span class="bar-label">T</span></div>
+            <div class="bar-col"><div class="bar" style="height:90%"></div><span class="bar-label">F</span></div>
+            <div class="bar-col"><div class="bar" style="height:60%"></div><span class="bar-label">S</span></div>
+            <div class="bar-col"><div class="bar" style="height:80%"></div><span class="bar-label">S</span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h4>Top customers</h4>
+          <div class="customer-row">
+            <span class="customer-name">Mama Gold Stores</span>
+            <div class="customer-bar"><span style="width:100%"></span></div>
+            <span class="customer-amount">&#8358;3.2M</span>
+          </div>
+          <div class="customer-row">
+            <span class="customer-name">BuildRite Ltd</span>
+            <div class="customer-bar"><span style="width:75%"></span></div>
+            <span class="customer-amount">&#8358;2.4M</span>
+          </div>
+          <div class="customer-row">
+            <span class="customer-name">Ekoh Pharmacy</span>
+            <div class="customer-bar"><span style="width:50%"></span></div>
+            <span class="customer-amount">&#8358;1.6M</span>
+          </div>
+          <div class="customer-row">
+            <span class="customer-name">Spark Electronics</span>
+            <div class="customer-bar"><span style="width:28%"></span></div>
+            <span class="customer-amount">&#8358;0.9M</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Compliance Banner -->
+<section class="compliance reveal" id="compliance">
+  <div class="container">
+    <h2>Nigeria's e-invoicing rules are coming. Be ready.</h2>
+    <p>FIRS, NRS and state-level mandates are rolling out. ComplyBooks keeps your invoices compliant so you can focus on your business.</p>
+    <a href="#" class="btn-white">Prepare your business for compliant invoicing &rarr;</a>
+  </div>
+</section>
+
+<!-- Customers Section -->
+<section class="customers reveal">
+  <div class="container">
+    <div class="section-label" style="color:rgba(255,255,255,.6);">Who It's For</div>
+    <h2 class="section-title">Made for the businesses that keep Nigeria moving.</h2>
+    <p class="section-sub">If you sell, stock, invoice or report &mdash; ComplyBooks fits the way you already work.</p>
+    <div class="customer-types">
+      <div class="customer-type">&#128722; Retail &amp; Trade</div>
+      <div class="customer-type">&#127981; Wholesale &amp; Distribution</div>
+      <div class="customer-type">&#9881; Services &amp; Consulting</div>
+      <div class="customer-type">&#127959; Construction &amp; Building</div>
+      <div class="customer-type">&#127973; Healthcare &amp; Pharmacy</div>
+      <div class="customer-type">&#128187; Technology &amp; Digital</div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="pricing reveal" id="pricing">
+  <div class="pricing-header">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Simple plans that grow with you.</h2>
+    <p class="section-sub">Start with invoicing today. Add inventory, accounting, compliance and AI as your business grows. No long contracts.</p>
+  </div>
+  <div class="pricing-grid container">
+    <div class="pricing-card">
+      <h3>Starter</h3>
+      <p class="plan-desc">Small businesses starting with invoicing.</p>
+      <div class="price">&#8358;5,000</div>
+      <div class="price-period">per month</div>
+      <ul>
+        <li>Sales &amp; invoicing</li>
+        <li>Up to 2 users</li>
+        <li>Basic dashboard</li>
+      </ul>
+      <a href="#" class="btn-outline">Get Started</a>
+    </div>
+    <div class="pricing-card popular">
+      <span class="popular-badge">MOST POPULAR</span>
+      <h3>Business</h3>
+      <p class="plan-desc">Growing SMEs that need stock, purchases and AI.</p>
+      <div class="price">&#8358;15,000</div>
+      <div class="price-period">per month</div>
+      <ul>
+        <li>Everything in Starter</li>
+        <li>Inventory &amp; purchases</li>
+        <li>AI receipt capture</li>
+        <li>Up to 5 users</li>
+      </ul>
+      <a href="#" class="btn-primary">Get Started</a>
+    </div>
+    <div class="pricing-card">
+      <h3>Compliance Pro</h3>
+      <p class="plan-desc">Businesses serious about compliance.</p>
+      <div class="price">&#8358;30,000</div>
+      <div class="price-period">per month</div>
+      <ul>
+        <li>Everything in Business</li>
+        <li>Audit logs</li>
+        <li>Advanced reports</li>
+        <li>Multi-user approvals</li>
+      </ul>
+      <a href="#" class="btn-outline">Get Started</a>
+    </div>
+    <div class="pricing-card">
+      <h3>Enterprise Lite</h3>
+      <p class="plan-desc">Multi-branch businesses with custom needs.</p>
+      <div class="price">Custom</div>
+      <div class="price-period">contact sales</div>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>Dedicated database option</li>
+        <li>Custom workflows</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="#" class="btn-outline">Contact Sales</a>
+    </div>
+  </div>
+  <p class="pricing-note">Prices in Naira, billed monthly. VAT may apply. Annual billing saves more.</p>
+</section>
+
+<!-- Why Section -->
+<section class="why reveal">
+  <div class="container">
+    <div class="why-header">
+      <div class="section-label">Why ComplyBooks</div>
+      <h2 class="section-title">Why business owners choose ComplyBooks</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-check">&#10003;</div>
+        <p>Simple enough for everyday users.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-check">&#10003;</div>
+        <p>Powerful enough for growing businesses.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-check">&#10003;</div>
+        <p>Built around Nigerian SME realities.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-check">&#10003;</div>
+        <p>Helps reduce manual data entry.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-check">&#10003;</div>
+        <p>Keeps business records organized.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-check">&#10003;</div>
+        <p>Visibility without accounting confusion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final-cta reveal">
+  <div class="container">
+    <h2>Ready to sell, invoice, comply, and grow?</h2>
+    <p>Start with simple invoicing today. Add inventory, accounting, compliance and AI as your business grows.</p>
+    <div class="final-ctas">
+      <a href="#" class="btn-white" data-open-demo>Book a Demo &rarr;</a>
+      <a href="#" class="btn-dark">Start Free Trial</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14,2 14,8 20,8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        ComplyBooks
+      </a>
+      <p>ERP power, SME simplicity. The Nigeria-first platform for selling, invoicing, stock, accounting and e-invoicing compliance.</p>
+      <div class="social-links">
+        <a href="#" class="social-link" aria-label="X / Twitter">&#120143;</a>
+        <a href="#" class="social-link" aria-label="LinkedIn">in</a>
+        <a href="#" class="social-link" aria-label="Instagram">&#9737;</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#">Sales &amp; Invoicing</a>
+      <a href="#">Inventory</a>
+      <a href="#">Accounting</a>
+      <a href="#">Compliance</a>
+      <a href="#">AI Assistant</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+      <a href="#">Partners</a>
+      <a href="#">Security</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="footer-contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        hello@complybooks.ng
+      </div>
+      <div class="footer-contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        +234 800 000 0000
+      </div>
+      <div class="footer-contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Lagos, Nigeria
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span><strong>ComplyBooks</strong> &mdash; ERP power, SME simplicity.</span>
+    <span>&copy; 2026 ComplyBooks. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- Demo Request Modal -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">&times;</button>
+
+    <div id="demoForm">
+      <h2>Book a Demo</h2>
+      <p class="modal-sub">See how ComplyBooks can simplify your business. We'll be in touch within 24 hours.</p>
+      <form id="demoRequestForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="demo-first">First name *</label>
+            <input type="text" id="demo-first" name="first_name" placeholder="Ade" required>
+          </div>
+          <div class="form-group">
+            <label for="demo-last">Last name *</label>
+            <input type="text" id="demo-last" name="last_name" placeholder="Okafor" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="demo-email">Work email *</label>
+          <input type="email" id="demo-email" name="email" placeholder="ade@company.ng" required>
+        </div>
+        <div class="form-group">
+          <label for="demo-phone">Phone number *</label>
+          <input type="tel" id="demo-phone" name="phone" placeholder="+234 800 000 0000" required>
+        </div>
+        <div class="form-group">
+          <label for="demo-company">Company name</label>
+          <input type="text" id="demo-company" name="company" placeholder="Your business name">
+        </div>
+        <div class="form-group">
+          <label for="demo-message">Anything else?</label>
+          <textarea id="demo-message" name="message" placeholder="Tell us about your business or what you'd like to see..."></textarea>
+        </div>
+        <div class="form-error" id="formError"></div>
+        <button type="submit" class="form-submit" id="formSubmitBtn">Request a Demo</button>
+      </form>
+    </div>
+
+    <div class="form-feedback" id="demoSuccess">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+      <h3>You're all set!</h3>
+      <p>We've received your request and will reach out within 24 hours to schedule your demo.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Reveal on scroll
+  const reveal = (el) => el.classList.add('in');
+  const collect = () => document.querySelectorAll('.reveal:not(.in)');
+
+  if (!('IntersectionObserver' in window)) {
+    collect().forEach(reveal);
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          reveal(en.target);
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    collect().forEach(e => io.observe(e));
+  }
+  setTimeout(() => collect().forEach(reveal), 2000);
+
+  // Dashboard tab switching
+  document.querySelectorAll('.dash-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // Demo Modal
+  const API_ENDPOINT = 'https://api.complybooks.ng/demo-request';
+  const overlay = document.getElementById('demoModal');
+  const form = document.getElementById('demoRequestForm');
+  const formWrap = document.getElementById('demoForm');
+  const success = document.getElementById('demoSuccess');
+  const errorEl = document.getElementById('formError');
+  const submitBtn = document.getElementById('formSubmitBtn');
+
+  function openModal() {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    const first = document.getElementById('demo-first');
+    setTimeout(() => first && first.focus(), 300);
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function resetForm() {
+    form.reset();
+    formWrap.style.display = '';
+    success.classList.remove('show');
+    errorEl.classList.remove('show');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Request a Demo';
+  }
+
+  document.querySelectorAll('[data-open-demo]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetForm();
+      openModal();
+    });
+  });
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.classList.remove('show');
+
+    const data = {
+      first_name: form.first_name.value.trim(),
+      last_name: form.last_name.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      company: form.company.value.trim(),
+      message: form.message.value.trim()
+    };
+
+    if (!data.first_name || !data.last_name || !data.email || !data.phone) {
+      errorEl.textContent = 'Please fill in all required fields.';
+      errorEl.classList.add('show');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errorEl.textContent = 'Please enter a valid email address.';
+      errorEl.classList.add('show');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      const res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error('Request failed');
+      formWrap.style.display = 'none';
+      success.classList.add('show');
+    } catch (err) {
+      errorEl.textContent = 'Something went wrong. Please try again or email us at hello@complybooks.ng.';
+      errorEl.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Request a Demo';
+    }
+  });
+});
+</script>
+</body>
+</html>
